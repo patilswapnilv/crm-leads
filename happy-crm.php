@@ -140,12 +140,6 @@ function crm_front_end_form() {
 
 	</p>
 
-	<p><?php wp_dropdown_categories( 'show_option_none=Status&tab_index=4&taxonomy=lead-status' ); ?></p>
-
-	<p><label for="post_tags">Post Tags</label>
-
-	<input type="text" value="" tabindex="5" size="16" name="post-tags" id="post-tags" /></p>
-
 	<p align="right"><input type="submit" value="Publish" tabindex="6" id="submit" name="submit" /></p>
 
 	<input type="hidden" name="post-type" id="post-type" value="lead" />
@@ -181,17 +175,23 @@ function crm_save_post_data() {
 			echo 'Please enter a Name';
 			exit;
 		}
+		if (isset ($_POST['phoneno'])) {
+			$phoneno = $_POST['phoneno'];
+		} else {
+			echo 'Please enter the contact number';
+			exit;
+		}
+		if (isset ($_POST['email'])) {
+			$email = $_POST['email'];
+		} else {
+			echo 'Please enter the correct email';
+			exit;
+		}
 		if (isset ($_POST['description'])) {
 			$description = $_POST['description'];
 		} else {
 			echo 'Please enter the message';
 			exit;
-		}
-
-		if(isset($_POST['post_tags'])){
-		$tags = $_POST['post_tags'];
-		}else{
-		$tags = "";
 		}
 
 		// Add the content of the form to $post as an array
@@ -200,10 +200,8 @@ function crm_save_post_data() {
 			'phoneno'=> $phoneno,
 			'email'=> $email,
 			'post_content' => $description,
-			//'post_category' => $_POST['cat'],  // Usable for custom taxonomies too
-			//'tags_input' => $tags,
 			'post_status' => 'publish',			// Choose: publish, preview, future, etc.
-			'post_type' => $_POST['lead']  // Use a custom post type if you want to
+			'post_type' => 'lead'  // Use a custom post type if you want to
 		);
 		wp_insert_post($post);  // http://codex.wordpress.org/Function_Reference/wp_insert_post
 
